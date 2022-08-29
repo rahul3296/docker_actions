@@ -39,11 +39,25 @@ jobs:
     
             # Basic authentication credentials
             JF_USER: ${{ secrets.JF_USER }}
-            JF_PASSWORD: ${{ secrets.JF_PASSWORD }}            
+            JF_PASSWORD: ${{ secrets.JF_PASSWORD }}  
+      -
+        name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
       -
         name: Build and push
         uses: docker/build-push-action@v2
         with:
           context: .
-          push: true
-          tags: rahul3296.jfrog.io/rahul3296:latest
+          push: false
+          tags: myimage:latest
+          
+      -
+        name: Push to artficatory
+        run: |
+          docker login -u rahu.3296@gmail.com -p Jackadv@1 rahul3296.jfrog.io
+          docker tag myimage:latest rahul3296.jfrog.io/rahul3296/myimage
+          docker push rahul3296.jfrog.io/rahul3296/myimage
+      
