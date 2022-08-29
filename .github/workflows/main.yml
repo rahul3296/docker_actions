@@ -52,13 +52,14 @@ jobs:
         with:
           context: .
           push: true
-          tags: myimage:latest
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/docker_actions:latest
           
       -
         name: Push to artficatory
         run: |
           docker images
           docker login -u rahu.3296@gmail.com -p Jackadv@1 rahul3296.jfrog.io
-          docker tag myimage:latest rahul3296.jfrog.io/rahul3296/myimage
+          docker pull docker.io/rahul3296/docker_actions:latest 
+          docker tag docker.io/rahul3296/docker_actions:latest rahul3296.jfrog.io/rahul3296/myimage
           docker push rahul3296.jfrog.io/rahul3296/myimage
       
