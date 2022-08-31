@@ -56,7 +56,6 @@ jobs:
           
       -
         name: Build and push RBASE
-        needs: Build and push ROS 
         uses: docker/build-push-action@v2
         with:
           context: "{{defaultContext}}:2.RBASE"
