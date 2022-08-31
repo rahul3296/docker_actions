@@ -30,9 +30,9 @@ jobs:
         env:
           DOCKER_IMAGE_FULLNAME: ${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_REPO }}/${{ env.DOCKER_IMAGE_NAME }}:${{ env.DOCKER_IMAGE_TAG }}
         run: | 
-          ls -lrth
           sed -i -e "s#GIT_R_VERSION#${{ env.R_VERSION }}#" 2.RBASE/Dockerfile 
           sed -i -e "s#GIT_ROS#${{ env.DOCKER_IMAGE_FULLNAME }}#" 2.RBASE/Dockerfile
+          echo "DOCKER_IMAGE_FULLNAME=${{ env.DOCKER_IMAGE_FULLNAME }}" >> $GITHUB_ENV
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v1
@@ -47,7 +47,7 @@ jobs:
           username: ${{ secrets.JF_USER }}
           password: ${{ secrets.JF_PASSWORD }}
       -
-        name: Build and push
+        name: Build and push ROS
         uses: docker/build-push-action@v2
         with:
           context: "{{defaultContext}}:1.ROS"
@@ -55,7 +55,8 @@ jobs:
           tags: ${{ env.DOCKER_IMAGE_FULLNAME }}_ros
           
       -
-        name: Build and push
+        name: Build and push RBASE
+        needs: Build and push ROS 
         uses: docker/build-push-action@v2
         with:
           context: "{{defaultContext}}:2.RBASE"
