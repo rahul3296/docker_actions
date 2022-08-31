@@ -30,9 +30,7 @@ jobs:
         env:
           DOCKER_IMAGE_FULLNAME: ${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_REPO }}/${{ env.DOCKER_IMAGE_NAME }}:${{ env.DOCKER_IMAGE_TAG }}
         run: | 
-          ls -lrth;cd 1.ROS;ls -lrth;cat Dockerfile
-          sed -i -e "s/GIT_R_VERSION/${{ env.R_VERSION }}/" Dockerfile 
-          cd ../2.RBASE;ls -lrth;cat Dockerfile
+          sed -i -e "s/GIT_R_VERSION/${{ env.R_VERSION }}/" 2.RBASE/Dockerfile 
           sed -i -e "s/GIT_ROS/${{ env.DOCKER_IMAGE_FULLNAME }}/" 2.RBASE/Dockerfile
           
       -
