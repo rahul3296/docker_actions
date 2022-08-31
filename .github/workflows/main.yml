@@ -27,10 +27,11 @@ jobs:
           
       -
         name: Update Dockerfile
+        env:
+          DOCKER_IMAGE_FULLNAME: ${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_REPO }}/${{ env.DOCKER_IMAGE_NAME }}:${{ env.DOCKER_IMAGE_TAG }}
         run: |   
-          DOCKER_IMAGE_FULLNAME=${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_REPO }}/${{ env.DOCKER_IMAGE_NAME }}:${{ env.DOCKER_IMAGE_TAG }}
-          sed -i -e "s/GIT_R_VERSION/${{ env.R_VERSION }}/" ./1.ROS/Dockerfile
-          sed -i -e "s/GIT_ROS/$DOCKER_IMAGE_FULLNAME/" ./2.RBASE/Dockerfile
+          sed -i -e "s/GIT_R_VERSION/${{ env.R_VERSION }}/" 1.ROS/Dockerfile
+          sed -i -e "s/GIT_ROS/$DOCKER_IMAGE_FULLNAME/" 2.RBASE/Dockerfile
           
       -
         name: Set up QEMU
