@@ -23,11 +23,15 @@ jobs:
       -
         name: Set environment
         run: |
-          cat Setup.env >> $GITHUB_ENV      
+          cat Setup.env >> $GITHUB_ENV
+          
       -
         name: Update Dockerfile
-        run: |      
-          sed -i -e "s/GIT_R_VERSION/${{ env.R_VERSION }}/" Dockerfile   
+        run: |   
+          DOCKER_IMAGE_FULLNAME=${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_REPO }}/${{ env.DOCKER_IMAGE_NAME }}:${{ env.DOCKER_IMAGE_TAG }}
+          sed -i -e "s/GIT_R_VERSION/${{ env.R_VERSION }}/" ./1.ROS/Dockerfile
+          sed -i -e "s/GIT_ROS/$DOCKER_IMAGE_FULLNAME/" ./1.RBASE/Dockerfile
+          
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v1
@@ -45,7 +49,14 @@ jobs:
         name: Build and push
         uses: docker/build-push-action@v2
         with:
-          context: .
+          context: "{{defaultContext}}:1.ROS"
           push: true
-          tags: ${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_REPO }}/${{ env.DOCKER_IMAGE_NAME }}:${{ env.DOCKER_IMAGE_TAG }}
+          tags: $DOCKER_IMAGE_FULLNAME_ros
           
+      -
+        name: Build and push
+        uses: docker/build-push-action@v2
+        with:
+          context: "{{defaultContext}}:1.RBASE"
+          push: true
+          tags: $DOCKER_IMAGE_FULLNAME_rbase          
