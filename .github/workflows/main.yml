@@ -31,10 +31,8 @@ jobs:
           DOCKER_IMAGE_FULLNAME: ${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_REPO }}/${{ env.DOCKER_IMAGE_NAME }}:${{ env.DOCKER_IMAGE_TAG }}
         run: | 
           ls -lrth
-          sed -i -e "s/GIT_R_VERSION/${{ env.R_VERSION }}/" Dockerfile 
-          sed -i -e "s/GIT_ROS/${{ env.DOCKER_IMAGE_FULLNAME }}/" Dockerfile
-        working-directory: ./2.RBASE
-                  
+          sed -i -e "s#GIT_R_VERSION#${{ env.R_VERSION }}#" 2.RBASE/Dockerfile 
+          sed -i -e "s#GIT_ROS#${{ env.DOCKER_IMAGE_FULLNAME }}#" 2.RBASE/Dockerfile
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v1
