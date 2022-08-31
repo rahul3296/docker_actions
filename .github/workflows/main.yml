@@ -33,6 +33,7 @@ jobs:
           sed -i -e "s#GIT_R_VERSION#${{ env.R_VERSION }}#" 2.RBASE/Dockerfile 
           sed -i -e "s#GIT_ROS#${{ env.DOCKER_IMAGE_FULLNAME }}#" 2.RBASE/Dockerfile
           echo "DOCKER_IMAGE_FULLNAME=${{ env.DOCKER_IMAGE_FULLNAME }}" >> $GITHUB_ENV
+          cat 2.RBASE/Dockerfile
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v1
